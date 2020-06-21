@@ -63,7 +63,7 @@
 
     function initApp(){
 
-        kai_utils.enableConsole()
+        //kai_utils.enableConsole()
 
         let app = new kai_AvastarScan(document)
         let vm = new kai_ViewManager(app.avastarScanList) // avastarScanList as data manager
