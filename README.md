@@ -6,7 +6,7 @@ Version 0.01 – No promises made.
 - Works in Google Chrome
 - Open Bookmarks Manager
 - Add a new bookmark to the *Bookmarks Bar*
-- In the URL field, copy this code below:
+- In the URL field, copy & paste the code below:
 ```
 javascript:(()=>{let s = document.createElement("script");s.src = "http://localhost:3030/_bountyHunter_app.js";document.head.appendChild(s)})()
 ```
