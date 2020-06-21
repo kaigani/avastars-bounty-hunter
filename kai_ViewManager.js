@@ -180,6 +180,7 @@ class kai_ViewManager {
                 this.dataManager.remove(
                     document.getElementById('kai_list_select').value // selected id
                 )
+                this.dataManager.save()
 
                 this.currentView = 'start'
                 break
