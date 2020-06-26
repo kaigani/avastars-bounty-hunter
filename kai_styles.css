@@ -31,6 +31,11 @@ button {
     -ms-user-select: none;
     user-select: none;
 }
+
+.kai_status { 
+    color: red;
+}
+
 #svgOutline {
     padding: 6px;
     background-color: red;
