@@ -1,6 +1,6 @@
 # avastars-bounty-hunter
 **Bounty Hunter tool for Avastars**
-Version 0.01 – No promises made.
+Version 0.01 – Currently disabled pending a fix.
 
 ### How to install
 - Works in Google Chrome
