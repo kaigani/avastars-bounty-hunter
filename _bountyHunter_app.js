@@ -1,14 +1,15 @@
+// v0.1 
 ((window)=>{
 
     //const URL_PREFIX = "http://localhost:3030" 
-    const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter@latest"
+    const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter"
 
     function loadScript(url) {
         return new Promise(function (resolve, reject) {
           let script = document.createElement('script')
       
           script.async = true
-          script.src = `${url}?${Date.now()}`
+          script.src = `${url}?${Date.now()}` // refresh cached version
       
           // trigger fulfilled state when script is ready
           script.onload = resolve
@@ -41,23 +42,23 @@
     Promise.all([
 
         // CSS
-        loadStyles(`${URL_PREFIX}/kai_styles.css`),
+        loadStyles(`${URL_PREFIX}/kai_styles.min.css`),
 
         // kai_globals
-        loadScript(`${URL_PREFIX}/kai_globals.js`), 
+        loadScript(`${URL_PREFIX}/kai_globals.min.js`), 
 
         // avastarTraits - data
-        loadScript(`${URL_PREFIX}/avastar-traits.js`), 
+        loadScript(`${URL_PREFIX}/avastar-traits.min.js`), 
 
         // kai_utils - utility functions
-        loadScript(`${URL_PREFIX}/kai_utils.js`),
+        loadScript(`${URL_PREFIX}/kai_utils.min.js`),
         
         // kai_ViewManager
-        loadScript(`${URL_PREFIX}/kai_ViewManager.js`),
+        loadScript(`${URL_PREFIX}@d668b7c6d4d484877dd99a745517fa584c25c17e/kai_ViewManager.min.js`),
 
         // AvastarScan - core app
-        loadScript(`${URL_PREFIX}/kai_AvastarScanList.js`),
-        loadScript(`${URL_PREFIX}/kai_AvastarScan.js`)
+        loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
+        loadScript(`${URL_PREFIX}@d7c7cf60263b3c5e682454e290fefbd8536b8ceb/kai_AvastarScan.min.js`)
 
     ]).then(initApp)
 
