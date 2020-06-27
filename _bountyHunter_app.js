@@ -8,7 +8,7 @@
           let script = document.createElement('script')
       
           script.async = true
-          script.src = url
+          script.src = `${url}?${Date.now()}`
       
           // trigger fulfilled state when script is ready
           script.onload = resolve
