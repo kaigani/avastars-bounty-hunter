@@ -675,9 +675,9 @@ const rarityColors = [
 
 return class AvastarScan {
 
-    constructor(doc){
+    constructor(xdc){
 
-        this.document = doc ? doc : document
+        this.d = new kai_xDC(xdc)
 
         // Matching list
         this.avastarScanList = new kai_AvastarScanList()
@@ -692,8 +692,8 @@ return class AvastarScan {
         this.initScanObserver()
 
         // PAGE TRIGGERS to SHOW / HIDE
-        this.navDiscover = this.document.getElementsByClassName('nav')[0].children[2].firstChild
-        this.navQueue = this.document.getElementsByClassName('nav')[0].children[4].firstChild
+        this.navDiscover = this.d.getEl('navDiscover')
+        this.navQueue = this.d.getEl('navQueue')
 
         // event listeners
         let hideEvent = new Event('kai_hideView')
@@ -708,7 +708,7 @@ return class AvastarScan {
 
     initScanObserver(){
         // Select the node that will be observed for mutations
-        const parentNode = document.getElementById('app')
+        const parentNode = this.d.getEl('app')
 
         // Options for the observer (which mutations to observe)
         const config = { attributes: true, childList: true, subtree: true }
@@ -727,7 +727,7 @@ return class AvastarScan {
             console.log(`PAGE CHANGE - ${mutationsList.length}`)
             
             
-            let childNode = document.getElementById('scroller')
+            let childNode = this.d.getEl('scroller')
             if(childNode){
                 // only reset the observer if the scroller has changed
                 //if(!prevScroller){
@@ -881,8 +881,8 @@ return class AvastarScan {
 
         this.runScan_key = this.runScan_key || ''
 
-        let list = this.document.getElementsByClassName('AvastarImageWrap')
-        let key = list[0].firstChild.src
+        let list = this.d.getEl('list')
+        let key = list[0].src
         //console.log(key)
 
         // DON'T RE-RUN on the same list
@@ -892,7 +892,7 @@ return class AvastarScan {
             let scanResults = []
             for(let i=0;i<list.length;i++){ 
 
-                let el = list[i].firstChild
+                let el = list[i]
 
                 // represent an avastar
                 let avastar = {}
@@ -907,7 +907,6 @@ return class AvastarScan {
                 // get score & overall rarity
                 avastar.score = this.getScore(avastar.rawTraits)
                 avastar.overallRarity = this.getOverallRarityByScore(avastar.score)
-                debugger
 
                 // rarityColor
                 let rarityColor = rarityColors[rarityLevels.indexOf(avastar.overallRarity)]
@@ -945,8 +944,8 @@ return class AvastarScan {
     }
 
     highlightAvastar(i){
-        let list = this.document.getElementsByClassName('AvastarImageWrap')
-        let el = list[i].firstChild //.style.opacity = '20%'
+        let list = this.d.getEl('list')
+        let el = list[i]
         el.animate([
             // keyframes
             { filter: 'brightness(100%)', opacity:0.9 }, 
@@ -976,7 +975,7 @@ return class AvastarScan {
     }
 
     getAvastarEl(i){
-        return this.document.getElementsByClassName('AvastarImageWrap')[i].firstChild
+        return this.d.getEl('list')[i]
     }
 
     getAvastar(i){
