@@ -1,4 +1,4 @@
-// v0.1 
+// v0.1x 
 ((window)=>{
 
     //const URL_PREFIX = "http://localhost:3030" 
@@ -47,9 +47,6 @@
         // kai_globals
         loadScript(`${URL_PREFIX}/kai_globals.min.js`), 
 
-        // kai_xDC
-        loadScript(`${URL_PREFIX}/kai_xDC.min.js`),
-
         // avastarTraits - data
         loadScript(`${URL_PREFIX}/avastar-traits.min.js`), 
 
@@ -61,7 +58,7 @@
 
         // AvastarScan - core app
         loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
-        loadScript(`${URL_PREFIX}@425ece6b417ee2fd2a3b0f021e01ef028a519fe7/kai_AvastarScan.min.js`)
+        loadScript(`${URL_PREFIX}@d7c7cf60263b3c5e682454e290fefbd8536b8ceb/kai_AvastarScan.min.js`)
 
     ]).then(initApp)
 
