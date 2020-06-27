@@ -1,7 +1,7 @@
 ((window)=>{
 
     //const URL_PREFIX = "http://localhost:3030" 
-    const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter"
+    const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter@latest"
 
     function loadScript(url) {
         return new Promise(function (resolve, reject) {
