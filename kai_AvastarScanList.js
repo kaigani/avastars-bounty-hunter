@@ -6,7 +6,7 @@ class AvastarScanList {
         this.count = 0
         this.list = []
 
-        this.constructor.register( 'Default', AvastarScanMatch )
+        //this.constructor.register( 'Default', AvastarScanMatch )
            
         if(o){
             this.unserialize(o)
@@ -99,6 +99,7 @@ class AvastarScanList {
 
     save(){
         localStorage.setItem('kai_avastarScanList', JSON.stringify(this.serialize()))
+        debugger;
     }
 
 }
@@ -353,6 +354,7 @@ class AvastarScanCyborgMatch extends AvastarScanMatch {
 // CREATE NEW MATCH TYPES ON CLASS ------
 
 AvastarScanList
+    .register('Default', AvastarScanMatch)
     .register('Basic', AvastarScanBasicMatch)
     .register('Score', AvastarScanScoreMatch)
     .register('RarityCount', AvastarScanRarityCount)
