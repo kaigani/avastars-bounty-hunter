@@ -13,7 +13,7 @@ class kai_ViewManager {
             start : {
                 el : null,
                 template : `
-                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.1</b> – <span class="kai_status">Offline</span></div>
+                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.2</b>/div>
                 <div><button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'open'} }))">Open</button></div>
                 `,
                 data : {}
