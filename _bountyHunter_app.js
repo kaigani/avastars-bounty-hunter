@@ -46,6 +46,7 @@
 
         // kai_globals
         loadScript(`${URL_PREFIX}/kai_globals.min.js`), 
+        loadScript(`${URL_PREFIX}/kai_xDC.min.js`), 
 
         // avastarTraits - data
         loadScript(`${URL_PREFIX}/avastar-traits.min.js`), 
