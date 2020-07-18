@@ -1,8 +1,15 @@
 # avastars-bounty-hunter
 **Bounty Hunter tool for Avastars**
-Version 0.01 – Currently disabled pending a fix.
+Version 0.02
 
-### How to install
+### How to install - Easy
+- Works in Google Chrome
+- Open [Project Page](https://kaigani.github.io/avastars-bounty-hunter/)
+- Drag & Drop link to your bookmarks bar
+- Open [Avastars](https://avastars.io/)
+- Click on the bookmarklet, **once the page has completely loaded**
+
+### How to install - Manual
 - Works in Google Chrome
 - Open Bookmarks Manager
 - Add a new bookmark to the *Bookmarks Bar*
