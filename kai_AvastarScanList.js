@@ -183,6 +183,7 @@ class AvastarScanBasicMatch extends AvastarScanMatch {
         let o = super.serialize()
         o.maxOverallRarity = this.maxOverallRarity
         o.gender = this.gender
+        o.series = this.series
         o.traits = {}
         kai_globals.traitsList.map( trait=>{
             o.traits[trait] = {}
@@ -196,6 +197,7 @@ class AvastarScanBasicMatch extends AvastarScanMatch {
         super.unserialize(o)
         this.maxOverallRarity = o.hasOwnProperty('maxOverallRarity') ? o.maxOverallRarity : 'Legendary'
         this.gender = o.hasOwnProperty('gender') ? o.gender : 'Any'
+        this.series = o.hasOwnProperty('series') ? o.series : 'Any'
         o.traits = o.hasOwnProperty('traits') ? o.traits : {}
         this.traits = {}
         kai_globals.traitsList.map( trait=>{
