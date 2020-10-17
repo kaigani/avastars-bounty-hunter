@@ -59,7 +59,7 @@
 
         // AvastarScan - core app
         loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
-        loadScript(`${URL_PREFIX}@d8c4ae2170d0abf629af3b332522e2f6530af912/kai_AvastarScan.min.js`)
+        loadScript(`${URL_PREFIX}@bdf289f97ef91fd1e86fe7b7227921c22f3b9be8/kai_AvastarScan.min.js`)
 
     ]).then(initApp)
 
