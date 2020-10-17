@@ -13,7 +13,7 @@ class kai_ViewManager {
             start : {
                 el : null,
                 template : `
-                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.2</b></div>
+                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.2-s3FIX</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges">Show your support</a></div>
                 <div><button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'open'} }))">Open</button></div>
                 `,
                 data : {}
