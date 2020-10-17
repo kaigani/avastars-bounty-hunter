@@ -1,4 +1,4 @@
-const kai_AvastarScan = ( ()=>{
+
 
     // constants
 const traitRef = { 
@@ -223,9 +223,18 @@ const traitRef = {
         {name:`Backdrop 52`,rarity:`Legendary`,sex:`any`,series:`1	2	3	4	5`,pattern:`894.3c-21`},
     ],
     'Ears' : [
+        // SAME PATTERN - attached will never disambiguate from ATTACHED BITCOIN
+        //{name:`Attached`,rarity:`Common`,sex:`M`,series:`1				`,pattern:`3.3-1.8z`},
+        {name:`Attached`,rarity:`Common`,sex:`F`,series:`		3		`,pattern:`3.3-1.8z`},
+        // SAME PATTERN
+        {name:`Broad`,rarity:`Common`,sex:`F`,series:`			4	`,pattern:`8.3-.9z`},
+        //{name:`Broad CryptoVoxels Earrings`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:`appears as broad ** to fix - only disambig. by Sex, Series`},
+        //{name:`Broad`,rarity:`Common`,sex:`M`,series:`				5`,pattern:`8.3-.9z`},
+        // SAME PATTERN
+        {name:`Van Gogh`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`#ear_a"/></clipPath><g fill="#820606"`},
+        //{name:`Van Gogh`,rarity:`Uncommon`,sex:`F`,series:`				5`,pattern:`SAME AS MALE`},
         {name:`Narrow`,rarity:`Common`,sex:`M`,series:`1				`,pattern:`7.2z"/><pattern id="face_i"`},
         {name:`Square Gold Stud`,rarity:`Common`,sex:`F`,series:`1				`,pattern:`"skin_fill" d="M695.`},
-        {name:`Attached`,rarity:`Common`,sex:`M`,series:`1				`,pattern:`3.3-1.8z"/></g><pattern`},
         {name:`Pointed`,rarity:`Common`,sex:`F`,series:`1				`,pattern:`22.4-7.7 22.1z"/></g><p`},
         {name:`Square`,rarity:`Common`,sex:`M`,series:`	2			`,pattern:`13.6z"/><pattern id="face_i"`},
         {name:`Narrow`,rarity:`Common`,sex:`F`,series:`	2			`,pattern:`4-7.2z"/><pattern id="face_i"`},
@@ -234,29 +243,18 @@ const traitRef = {
         {name:`Rounded`,rarity:`Common`,sex:`M`,series:`		3		`,pattern:`2.3-2.6z"/><pattern id="face_i"`},
         {name:`Sticking Out`,rarity:`Common`,sex:`F`,series:`		3		`,pattern:`6.3 20.7z"/></g><pattern id="face_i"`},
         {name:`Pointed`,rarity:`Common`,sex:`M`,series:`		3		`,pattern:`4.5V526zm264.4`},
-        // SAME AS MALE
-        //{name:`Attached`,rarity:`Common`,sex:`F`,series:`		3		`,pattern:`SAME AS MALE`},
         {name:`Pointed Ear Cuff`,rarity:`Common`,sex:`M`,series:`			4	`,pattern:`435.9c.1 20.8`},
-        // SAME AS MALE
-        //{name:`Broad`,rarity:`Common`,sex:`F`,series:`			4	`,pattern:`SAME AS MALE`},
         {name:`Narrow Gold Stud`,rarity:`Common`,sex:`M`,series:`			4	`,pattern:`527c3.2 8.8`},
         {name:`Rounded`,rarity:`Common`,sex:`F`,series:`			4	`,pattern:`4.3-1.3z"/></g><pattern id="face_i"`},
-        {name:`Broad`,rarity:`Common`,sex:`M`,series:`				5`,pattern:`8.3-.9z"/></g><p`},
         {name:`Pointed Ear Cuff`,rarity:`Common`,sex:`F`,series:`				5`,pattern:`433.8l.5`},
         {name:`Square Gold Stud`,rarity:`Common`,sex:`M`,series:`				5`,pattern:`54.2M695.6`},
         {name:`Square`,rarity:`Common`,sex:`F`,series:`				5`,pattern:`13.6z"/></g></g><pattern id="face_i"`},
         {name:`Rounded Bitcoin Stud`,rarity:`Uncommon`,sex:`M`,series:`1	2			`,pattern:`2.3-2.6z"/><path fill="#303030"`},
-        // SAME AS BROAD - fix by sex, series
-        //{name:`Broad CryptoVoxels Earrings`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:`appears as broad ** to fix - only disambig. by Sex, Series`},
         {name:`Narrow Small Hoop`,rarity:`Uncommon`,sex:`M`,series:`1	2			`,pattern:`531.2c-2.3`},
         {name:`Rounded Bitcoin Earrings`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:`1.8v-3.6zm2.6`},
-        {name:`Broad CryptoVoxels Stud`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`4-1.2zM333.5`},
         {name:`Narrow Small Hoops`,rarity:`Uncommon`,sex:`F`,series:`		3	4	`,pattern:`M337.5 533.3c0`},
-        {name:`Van Gogh`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`#ear_a"/></clipPath><g fill="#820606"`},
         {name:`Attached Bluetooth`,rarity:`Uncommon`,sex:`F`,series:`		3	4	`,pattern:`ear_bm`},
         {name:`Sticking Out Ear Clip`,rarity:`Uncommon`,sex:`M`,series:`				5`,pattern:`437c-12.7`},
-        // SAME AS MALE
-        //{name:`Van Gogh`,rarity:`Uncommon`,sex:`F`,series:`				5`,pattern:`SAME AS MALE`},
         {name:`Attached Bluetooth`,rarity:`Uncommon`,sex:`M`,series:`				5`,pattern:`478.9l.9`},
         {name:`Sticking Out Ear Clip`,rarity:`Uncommon`,sex:`F`,series:`				5`,pattern:`M293.2 42`},
         {name:`Rounded Gauges`,rarity:`Rare`,sex:`M`,series:`1	2	3		`,pattern:`332.9 407.5c`},
@@ -393,7 +391,7 @@ const traitRef = {
         {name:`Stitched Shut`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:`642.6c-3.9`},
         {name:`Braces Smile`,rarity:`Uncommon`,sex:`M`,series:`1	2			`,pattern:`#A44EC4" d="M543.5 `},
         {name:`Bright Smile`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:`624.6c-4.3`},
-        {name:`Marmota x Milky`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`skin_dark d="M558.`},
+        {name:`Marmota x Milky`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`607.4c-1`},
         {name:`Referee Whistle`,rarity:`Uncommon`,sex:`F`,series:`		3	4	`,pattern:`.2-2.6-.1-4.3-.2-4.4`},
         {name:`Elvis`,rarity:`Uncommon`,sex:`M`,series:`		3	4	`,pattern:`9.5.3-12.4 3.6-44.8`},
         {name:`Angry Lipring`,rarity:`Uncommon`,sex:`F`,series:`		3	4	`,pattern:`M520.9 611c-1.3 0-1.`},
@@ -669,6 +667,9 @@ const rarityColors = [
     'rgb(255, 69, 96)' // legendary
 ]
 
+// EXTERNALIZE CONSTANTS
+
+const kai_AvastarScan = ( ()=>{
 //
 // APP CLASS
 //
@@ -846,9 +847,9 @@ return class AvastarScan {
                     o.ears = {name:`Attached`,rarity:`Common`,sex:`F`,series:`		3		`,pattern:``}
                     break
                 case 'Broad':
-                    o.ears = {name:`Broad CryptoVoxels Earrings`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:``}
+                    //o.ears = {name:`Broad CryptoVoxels Earrings`,rarity:`Uncommon`,sex:`F`,series:`1	2			`,pattern:``}
                     // TO DO -- SWITCH AFTER SERIES 2!!!
-                    //o.ears = {name:`Broad`,rarity:`Common`,sex:`F`,series:`			4	`,pattern:``}
+                    o.ears = {name:`Broad`,rarity:`Common`,sex:`F`,series:`			4	`,pattern:``}
                     break
                 case 'Van Gogh':
                     o.ears = {name:`Van Gogh`,rarity:`Uncommon`,sex:`F`,series:`				5`,pattern:``}
