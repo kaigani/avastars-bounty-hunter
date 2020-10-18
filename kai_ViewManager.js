@@ -1,3 +1,6 @@
+//
+// Event >> Update Data >> Render View
+// 
 class kai_ViewManager {
 
     constructor(dataManager){
@@ -5,56 +8,113 @@ class kai_ViewManager {
         // expandable view container
         this.container = null 
 
-        // data manager
+        // data manager (AvastarScanList)
         this.dataManager = dataManager
 
         // views for the container
         this.views = { 
             start : {
+                // populate with the dom element
                 el : null,
+                // inner html template
                 template : `
-                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.2-s3FIX</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges">Show your support</a></div>
+                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.3</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank">Show your support</a></div>
                 <div><button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'open'} }))">Open</button></div>
                 `,
-                data : {}
+                // data for this view
+                data : {},
+                init : ()=>{
+                    // to do 
+                    console.log('Start: Init')
+                },
+                update : ()=>{
+                    // to do 
+                    console.log('Start: Update')
+                },
+                // render function to refresh this view with data
+                render : ()=>{ console.log('Start: It renders.') }
             },
-            list : {
+            menu : {
                 el : null,
                 template : `
-                <div>This is the list of filters</div>
+                <div>This is the menu of filters</div>
                 <div>
-                    <select id='kai_list_select'>
+                    <select id='kai_filter_select'>
                     </select>
                 </div>
                 <div>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'list_new'} }))">New</button>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'list_edit'} }))">Edit</button>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'list_delete'} }))">Delete</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_edit'} }))">Edit</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_delete'} }))">Delete</button>
+                </div>
+                <div>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_basic'} }))">New By Traits</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_score'} }))">New By High Score</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_rarity'} }))">New By Rarity Count</button>
                 </div>
                 `,
-                data : {}
+                data : {
+                    selected : null, // a filter id
+                    list : null, // a list of { id:...,name:....,type:...} objects
+                },
+                // data functions
+                // init - on loading the view
+                init : ()=>{ 
+                    
+                    let keys = this.dataManager.getKeys() // filters - reduced set
+                    //this.views.menu.data.list = this.dataManager.getKeys() // filters
+
+                    
+                    // init select list - exclude exotic types
+                    this.views.menu.data.list = keys.reduce( (prev,curr)=>{
+                        if(curr.type === 'Basic' || curr.type === 'Score' || curr.type === 'RarityCount'){
+                            prev.push( {
+                                id: curr.id,
+                                name: curr.name,
+                                type:curr.type
+                            })
+                        }
+                        return prev
+                    },[])
+
+                    // define selected as first in the list
+                    this.views.menu.data.selected = this.views.menu.data.list.length > 0 ? this.views.menu.data.list[0].id : null
+
+                    console.log('Menu: Init')
+                    
+                },
+                // update the data with any changes since init - call before getting data
+                update : ()=>{
+                    let elSelect = document.getElementById('kai_filter_select') // needs to be rendered after init
+                    this.views.menu.data.selected = elSelect.value
+                },
+                // refresh any UI elements
+                render : ()=>{
+                    let elSelect = document.getElementById('kai_filter_select')
+                    elSelect.innerHTML = `${this.views.menu.data.list.map(o=>'<option value='+o.id+'>'+o.name+'</option>').join('')}`
+                    console.log('Menu: It renders.')
+                }
             },
-            edit : {
+            edit_basic : {
                 el : null,
                 template : `
-                <div>This is the edit filter panel</div>
+                <div>This is the edit_basic filter panel</div>
 
-                <input id="kai_edit_name" type="text" value="" onblur="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_name', data:this.id} }))"></input>
+                <input id="kai_edit_basic_name" type="text" value="" removed_onblur="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_basic_name', data:this.id} }))"></input>
                 <div>
-                    <div id='kai_edit_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Gender</label><br/><span>Any</span></div>
-                    <div id='kai_edit_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Series</label><br/><span>Any</span></div>
-                    <div id='kai_edit_skinTone' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Skin Tone</label><br/><span>Any</span></div>
-                    <div id='kai_edit_hairColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_eyeColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eye Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_backgroundColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Background Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_backdrop' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Backdrop</label><br/><span>Any</span></div>
-                    <div id='kai_edit_ears' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Ears</label><br/><span>Any</span></div>
-                    <div id='kai_edit_face' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Face</label><br/><span>Any</span></div>
-                    <div id='kai_edit_nose' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Nose</label><br/><span>Any</span></div>
-                    <div id='kai_edit_mouth' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Mouth</label><br/><span>Any</span></div>
-                    <div id='kai_edit_facialFeature' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Facial Feature</label><br/><span>Any</span></div>
-                    <div id='kai_edit_eyes' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eyes</label><br/><span>Any</span></div>
-                    <div id='kai_edit_hairStyle' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Style</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Gender</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Series</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_skinTone' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Skin Tone</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_hairColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_eyeColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eye Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_backgroundColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Background Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_backdrop' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Backdrop</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_ears' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Ears</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_face' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Face</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_nose' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Nose</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_mouth' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Mouth</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_facialFeature' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Facial Feature</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_eyes' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eyes</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_hairStyle' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Style</label><br/><span>Any</span></div>
                 </div>
                 <div>
                     <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_save'} }))">Save</button>
@@ -62,7 +122,185 @@ class kai_ViewManager {
                 </div>
                 `,
                 data : {
-                    current: null // current data record when being edited
+                    recordID: null,
+                    record: null // current data record when being edited
+
+                },
+                init : ()=>{
+                    // load current record by recordID - or create a new one
+                    this.views.edit_basic.data.record = this.views.edit_basic.data.recordID ? 
+                        this.dataManager.find( this.views.edit_basic.data.recordID ) : // should create a local copy
+                        this.dataManager.create('Basic')
+                    
+                    let record = this.views.edit_basic.data.record
+                    // 
+                    kai_globals.traitsList.map( trait=>{
+                        // should do data correction in the AvastarBasicMatch class 
+                        let gene = record.traits[trait].gene
+                        if(gene !== 'Any'){
+                            // look up actual Rarity - Record will have default valued otherwise
+                            let list = kai_utils.findMatching(trait,{gender:record.gender,gene:gene,series:record.series})
+                            let rarity = list.length > 0 ? list[0].rarity : 'Any' // could be wrong across genders
+                            record.traits[trait].rarity = rarity
+                        }
+                    })
+                    console.log('Edit Basic: Init')
+                },
+                update : ()=>{
+                    // set NAME data from the input field
+                    let elName = document.getElementById('kai_edit_basic_name') 
+                    if(this.views.edit_basic.data.record.hasOwnProperty('name')){ this.views.edit_basic.data.record.name = elName.value }
+                    console.log('Edit Basic: Update')
+                },
+                render : ()=>{
+                    let record = this.views.edit_basic.data.record
+                    let el = document.getElementById('kai_edit_basic_name')
+                
+                    el.value = record.name // make sure to keep this in sync via .update()
+
+                    // UPDATE BOXES TO REFLECT data
+                    // GENDER
+                    el = document.getElementById('kai_edit_basic_gender')
+                    el.getElementsByTagName('span')[0].innerText = record.gender
+
+                    // SERIES
+                    el = document.getElementById('kai_edit_basic_series')
+                    el.getElementsByTagName('span')[0].innerText = record.series
+
+                    // TRAITS
+                    kai_globals.traitsList.map( o=>{
+                        el = document.getElementById(`kai_edit_basic_${o}`)
+                        let rarity = record.traits[o].rarity
+                        let gene = record.traits[o].gene
+                        el.getElementsByTagName('span')[0].innerText = `${gene} ${gene === 'Any' && rarity !== 'Any' ? rarity : ''}`
+                        el.style.backgroundColor = kai_globals.rarityColors[ kai_globals.rarityLevels.indexOf(rarity) ]
+                    })
+                }
+            },
+            edit_score : {
+                // populate with the dom element
+                el : null,
+                // inner html template
+                template : `
+                <div><b>Edit High Score Filter</b></div>
+
+                <div>
+                    NAME <input id="kai_edit_score_name" type="text" value=""></input><br/>
+                    SCORE MAX <input id="kai_edit_score_max" type="number" value=""></input><br/>
+                </div>
+                
+                <div>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_save'} }))">Save</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_cancel'} }))">Cancel</button>
+                </div>
+                `,
+                // data for this view
+                data : {
+                    recordID: null,
+                    record: null
+                },
+                init : ()=>{
+                    // load current record by recordID - or create a new one
+                    this.views.edit_score.data.record = this.views.edit_score.data.recordID ? 
+                        this.dataManager.find( this.views.edit_score.data.recordID ) : // should create a local copy
+                        this.dataManager.create('Score')
+                    
+                    console.log('Edit Score: Init')
+                },
+                update : ()=>{
+                    // set NAME data from the input field
+                    let elName = document.getElementById('kai_edit_score_name') 
+                    if(this.views.edit_score.data.record.hasOwnProperty('name')){ this.views.edit_score.data.record.name = elName.value }
+                    // set MAX (n) data from the input field
+                    let elMax = document.getElementById('kai_edit_score_max') 
+                    if(this.views.edit_score.data.record.hasOwnProperty('n')){ this.views.edit_score.data.record.n = elMax.value }
+                    console.log('Edit Score: Update')
+                },
+                // render function to refresh this view with data
+                render : ()=>{ 
+                    let record = this.views.edit_score.data.record
+
+                    let el = document.getElementById('kai_edit_score_name')
+                    el.value = record.name // make sure to keep this in sync via .update()
+
+                    // UPDATE BOXES TO REFLECT data
+                    // MAX
+                    el = document.getElementById('kai_edit_score_max')
+                    el.value = record.n // make sure to keep this in sync via .update()
+
+                    console.log('Edit Score: It renders.') 
+                }
+            },
+            edit_rarity : {
+                // populate with the dom element
+                el : null,
+                // inner html template
+                template : `
+                <div><b>Edit Rarity Count</b></div>
+
+                <div>
+                    NAME <input id="kai_edit_rarity_name" type="text" value=""></input><br/>
+                    RARITY COUNT (AT LEAST) <input id="kai_edit_rarity_min" type="number" value=""></input>x 
+                    <select id="kai_edit_rarity_select">
+                        <option>Common</option>
+                        <option>Uncommon</option>
+                        <option>Rare</option>
+                        <option>Epic</option>
+                        <option>Legendary</option>
+                    </select><br/>
+                </div>
+                
+                <div>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_save'} }))">Save</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_cancel'} }))">Cancel</button>
+                </div>
+                `,
+                // data for this view
+                data : {
+                    recordID: null,
+                    record: null
+                },
+                init : ()=>{
+                    // load current record by recordID - or create a new one
+                    this.views.edit_rarity.data.record = this.views.edit_rarity.data.recordID ? 
+                    this.dataManager.find( this.views.edit_rarity.data.recordID ) : // should create a local copy
+                    this.dataManager.create('RarityCount')
+                     
+                    console.log('Edit Rarity Count: Init')
+                },
+                update : ()=>{
+
+                    // set NAME data from the input field
+                    let elName = document.getElementById('kai_edit_rarity_name') 
+                    if(this.views.edit_rarity.data.record.hasOwnProperty('name')){ this.views.edit_rarity.data.record.name = elName.value }
+
+                    // set MIN rarity count (n) data from the input field
+                    let elMin = document.getElementById('kai_edit_rarity_min') 
+                    if(this.views.edit_rarity.data.record.hasOwnProperty('n')){ this.views.edit_rarity.data.record.n = elMin.value }
+
+                    // set RARITY data from the select menu
+                    let elSelect = document.getElementById('kai_edit_rarity_select') 
+                    if(this.views.edit_rarity.data.record.hasOwnProperty('rarity')){ this.views.edit_rarity.data.record.rarity = elSelect.value }
+
+                    console.log('Edit Rarity Count: Update')
+                },
+                // render function to refresh this view with data
+                render : ()=>{ 
+                    let record = this.views.edit_rarity.data.record
+
+                    // UPDATE fields TO REFLECT data
+                    let el = document.getElementById('kai_edit_rarity_name')
+                    el.value = record.name // make sure to keep this in sync via .update()
+
+                    // MIN
+                    el = document.getElementById('kai_edit_rarity_min')
+                    el.value = record.n // make sure to keep this in sync via .update()
+
+                    // RARITY
+                    el = document.getElementById('kai_edit_rarity_select')
+                    el.value = record.rarity // make sure to keep this in sync via .update()
+
+                    console.log('Edit Rarity Count: It renders.') 
                 }
             },
             alert : {
@@ -72,7 +310,14 @@ class kai_ViewManager {
                 <div id='kai_alertbox'></div>
                 <div onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'close'} }))"><button>Close</button></div>
                 `,
-                data : {}
+                data : {},
+                init : ()=>{
+                    // to do 
+                },
+                update : ()=>{
+                    // to do 
+                },
+                render : ()=>{ console.log('Alert: It renders.') }
             }
         } 
 
@@ -87,11 +332,13 @@ class kai_ViewManager {
 
         // bind actions
         document.addEventListener('kai_action', e=>{ this.action(e.detail) }, false)
-        document.addEventListener('kai_viewData', e=>{ this.setViewData(e.detail) }, false)
-        document.addEventListener('kai_hideView', e=>{ this.hide() }, false)
-        document.addEventListener('kai_showView', e=>{ this.show() }, false)
-        document.addEventListener('kai_scanResults', e=>{ this.alert(e.detail) }, false)
+        //document.addEventListener('kai_viewData', e=>{ this.setViewData(e.detail) }, false)
+        //document.addEventListener('kai_hideView', e=>{ this.hide() }, false)
+        //document.addEventListener('kai_showView', e=>{ this.show() }, false)
+        //document.addEventListener('kai_scanResults', e=>{ this.alert(e.detail) }, false)
     }
+
+// BUSINESS LOGIC & ROUTING
 
     init(){
 
@@ -113,6 +360,20 @@ class kai_ViewManager {
         el.appendChild(this.container)
         document.body.appendChild(el) 
 
+        // Toggle button
+        el = document.createElement('div')
+        el.style.position='absolute'
+        el.style.top = '90'
+        el.style.left = '22'
+        el.style.width = '32'
+        el.style.height = '32'
+        el.style.zIndex = '999'
+        el.style.backgroundColor='rgba(0,0,0,0.4)'
+        el.style.backgroundImage="url('https://kaigani.github.io/avastars-bounty-hunter/kai_drol_32x32.png')"
+        //el.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+        el.onclick = this.toggleHidden.bind(this)
+        document.body.appendChild(el)
+
         // VIEWS
         Object.keys(this.views).map( key =>{
             let view = this.views[key]
@@ -122,6 +383,12 @@ class kai_ViewManager {
             this.container.appendChild(view.el)
         })
 
+        this.views[this.currentView].init()
+
+    }
+
+    toggleHidden(){
+        this.container.parentElement.hidden = !this.container.parentElement.hidden 
     }
 
     show(){
@@ -136,7 +403,12 @@ class kai_ViewManager {
         // TOGGLE CURRENT VIEW
         Object.keys(this.views).map( key =>{
             let view = this.views[key]
-            view.el.hidden = key !== this.currentView
+            if(key === this.currentView){
+                view.el.hidden = false
+                view.render()
+            }else{
+                view.el.hidden = true
+            }
         })
     }
 
@@ -148,37 +420,85 @@ class kai_ViewManager {
     }
 
     action(o){
+
+        // Update the current view data
+        this.views[this.currentView].update()
+
         switch(o.action){
             case 'open':
-                this.currentView = 'list'
-                this.views.list.data.selected = this.dataManager.getKeys()[0].id
-                this.renderListView()
-                break
-            
-            case 'list_new':
-                // load a new record
-                this.views.edit.data.record = this.dataManager.create('Basic')
-
-                this.currentView = 'edit'
-                this.renderEditView(true) 
+                this.currentView = 'menu'
+                this.views[this.currentView].init()
+                //this.views.menu.data.selected = this.dataManager.getKeys()[0].id
+                //this.renderMenuView()
+                //this.views.menu.render() // TODO **** can we render all views by default?
                 break
 
-            case 'list_edit':
+
+            case 'menu_new_basic':
                 
-                // load current record
-                this.views.edit.data.record = this.dataManager.find(
-                    document.getElementById('kai_list_select').value // selected id
-                ) // should create a new copy
+                // load a new record
+                // this.views.edit.data.record = this.dataManager.create('Basic')
+                this.views.edit_basic.data.recordID = null // will create a new record
 
-                this.currentView = 'edit'
-                this.renderEditView(true) // init at the start
+                this.currentView = 'edit_basic'
+                this.views[this.currentView].init()
+                //this.renderEditView(true) 
+                //this.views.edit.render(true) // TODO *** render all views
                 break
 
-            case 'list_delete':
+            case 'menu_new_score':
+                
+                this.views.edit_score.data.recordID = null // will create a new record
+
+                this.currentView = 'edit_score'
+                this.views[this.currentView].init()
+                break
+
+            case 'menu_new_rarity':
+            
+                this.views.edit_rarity.data.recordID = null // will create a new record
+
+                this.currentView = 'edit_rarity'
+                this.views[this.currentView].init()
+                break
+
+            case 'menu_edit':
+                
+                //this.views.menu.update() // set data for the current view
+
+                // choose the edit view by type
+                let filterType = this.views.menu.data.list.reduce((prev,curr)=>{
+                    prev = curr.id === this.views.menu.data.selected ? curr.type : prev
+                    return prev
+                },'Default')
+
+                switch(filterType){
+                    case 'Basic':
+                        this.currentView = 'edit_basic'
+                        this.views.edit_basic.data.recordID = this.views.menu.data.selected
+                        break
+                    case 'Score':
+                        this.currentView = 'edit_score'
+                        this.views.edit_score.data.recordID = this.views.menu.data.selected
+                        break
+                    case 'RarityCount':
+                        this.currentView = 'edit_rarity'
+                        this.views.edit_rarity.data.recordID = this.views.menu.data.selected
+                        break
+                    // default won't change the current view
+                }
+            
+                //this.currentView = 'edit'
+                this.views[this.currentView].init()
+                //this.renderEditView(true) // init at the start
+                //this.views.edit.render(true) // TODO *** MOVE TO RENDER ALL
+                break
+
+            case 'menu_delete':
 
                 // delete current record
                 this.dataManager.remove(
-                    document.getElementById('kai_list_select').value // selected id
+                    document.getElementById('kai_filter_select').value // selected id
                 )
                 this.dataManager.save()
 
@@ -186,12 +506,17 @@ class kai_ViewManager {
                 break
             
             case 'edit_save':
-                this.saveFilter()
+                //this.saveFilter()
+                // assume current view is 'edit_basic','edit_score' or 'edit_rarity'
+                this.dataManager.update(this.views[this.currentView].data.record)
+                this.dataManager.save()
+        
                 this.currentView = 'start'
+                this.views[this.currentView].init()
                 break
 
             case 'edit_cancel':
-                this.currentView = 'list'
+                this.currentView = 'menu'
                 break
             
             case 'close':
@@ -206,98 +531,85 @@ class kai_ViewManager {
     }
 
     saveFilter(){
-        let data = this.views.edit.data.record
-        data.name = document.getElementById('kai_edit_name').value
+        let record = this.views.edit.data.record
+        //record.name = document.getElementById('kai_edit_name').value // done via update
         
-        this.dataManager.update(data)
-        this.dataManager.save()
+        
     }
 
     deleteFilter(){
         // TODO
     }
 
-    // build the select list
-    renderListView(){
-        let el = document.getElementById('kai_list_select')
+//
+// RENDER FUNCTIONS
+//
+    // build the select filter list
+    /*
+    renderMenuView(){
+        let el = document.getElementById('kai_filter_select')
         let keys = this.dataManager.getKeys()
         el.innerHTML = `${keys.map(o=>o.type === 'Basic' ? '<option value='+o.id+'>'+o.name+'</option>' : '').join('')}`
-    }
+    }*/
 
     renderEditView(init=false){
 
-        let data = this.views.edit.data.record
+        let record = this.views[this.currentView].data.record
         let el = document.getElementById('kai_edit_name')
     
-        // INIT FROM data
-        if(init){
-
-            el.value = data.name
-
-            // should do data correction in the AvastarBasicMatch class **** TODO
-            kai_globals.traitsList.map( trait=>{
-    
-                let gene = data.traits[trait].gene
-                if(gene !== 'Any'){
-                    // look up actual Rarity
-                    let list = kai_utils.findMatching(trait,{gender:data.gender,gene:gene,series:data.series})
-                    let rarity = list.length > 0 ? list[0].rarity : 'Any' // could be wrong across genders
-                    data.traits[trait].rarity = rarity
-                }
-            })
-        }
+        el.value = record.name // make sure to keep this in sync via .update()
 
         // UPDATE BOXES TO REFLECT data
         // GENDER
         el = document.getElementById('kai_edit_gender')
-        el.getElementsByTagName('span')[0].innerText = data.gender
+        el.getElementsByTagName('span')[0].innerText = record.gender
 
         // SERIES
         el = document.getElementById('kai_edit_series')
-        el.getElementsByTagName('span')[0].innerText = data.series
+        el.getElementsByTagName('span')[0].innerText = record.series
 
         // TRAITS
         kai_globals.traitsList.map( o=>{
             el = document.getElementById(`kai_edit_${o}`)
-            let rarity = data.traits[o].rarity
-            let gene = data.traits[o].gene
+            let rarity = record.traits[o].rarity
+            let gene = record.traits[o].gene
             el.getElementsByTagName('span')[0].innerText = `${gene} ${gene === 'Any' && rarity !== 'Any' ? rarity : ''}`
             el.style.backgroundColor = kai_globals.rarityColors[ kai_globals.rarityLevels.indexOf(rarity) ]
         })
     }
 
     toggleBox(id){
-        let key = id.match(/^kai_edit_(.+)/) ? id.match(/^kai_edit_(.+)/)[1] : 'ERROR'
-        let data = this.views.edit.data.record
+        let key = id.match(/^.+_(.+)$/) ? id.match(/^.+_(.+)$/)[1] : 'ERROR'
+        let record = this.views[this.currentView].data.record
         let genderList = ['Any','Female','Male']
         if(key === 'ERROR') throw('ERROR at toggleBox')
 
         switch(key){
 
             case 'gender':
-                let i = genderList.indexOf(data.gender)+1
+                let i = genderList.indexOf(record.gender)+1
                 i = i < genderList.length ? i : 0
-                data.gender = genderList[i]
+                record.gender = genderList[i]
                 break
             
             case 'series':
-                data.series = data.series === 'Any' ? 0 : data.series
-                data.series = data.series < 5 ? data.series+1 : 0
-                data.series = data.series === 0 ? 'Any' : data.series 
+                record.series = record.series === 'Any' ? 0 : record.series
+                record.series = record.series < 5 ? record.series+1 : 0
+                record.series = record.series === 0 ? 'Any' : record.series 
                 break
 
             default:
                 // Create a new, mutable object to represent the current
                 /*
-                let match = { trait: trait, gender: data.gender, gene: 'Any', rarity: 'Any', series: data.series}
-                data.match.map( o=>{
+                let match = { trait: trait, gender: record.gender, gene: 'Any', rarity: 'Any', series: record.series}
+                record.match.map( o=>{
                     if(o.trait === trait){
                         match.gene = o.hasOwnProperty('gene') ? o.gene : 'Any'
                         match.rarity = o.hasOwnProperty('rarity') ? o.rarity : 'Any'
                     }
                 })
                 */
-                let trait = data.traits[key]
+                let trait = record.traits[key]
 
                 // ADVANCE to the next one, or wrap around to any/any
                 if(trait.rarity === 'Any'){
@@ -305,7 +617,7 @@ class kai_ViewManager {
                     trait.rarity = 'Common'
                 }else{
                     // Advance to the first gene within this rarity level, filtered by gender (any?) and series
-                    let traitList = kai_utils.findMatching(key,{gender:data.gender,rarity:trait.rarity,series:data.series})
+                    let traitList = kai_utils.findMatching(key,{gender:record.gender,rarity:trait.rarity,series:record.series})
                     let index = traitList.reduce( (prev,curr,i)=>{
                         return trait.gene === curr.name ? i : prev
                     },-1)
@@ -323,7 +635,7 @@ class kai_ViewManager {
                     }
                 }
         }
-        this.renderEditView()
+        //this.renderEditView() // deprecated
     }
 
     setViewData(o){
