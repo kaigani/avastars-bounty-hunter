@@ -55,7 +55,7 @@
         loadScript(`${URL_PREFIX}/kai_utils.min.js`),
         
         // kai_ViewManager
-        loadScript(`${URL_PREFIX}@0bef743a30aa062fb766b85ab9f4515b6b2f5bf7/kai_ViewManager.min.js`),
+        loadScript(`${URL_PREFIX}@8b41025f4b1d0beee61e2cc8bfbae6b8646c12ed/kai_ViewManager.min.js`),
 
         // AvastarScan - core app
         loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
