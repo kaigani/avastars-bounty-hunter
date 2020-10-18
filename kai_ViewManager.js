@@ -363,13 +363,16 @@ class kai_ViewManager {
         // Toggle button
         el = document.createElement('div')
         el.style.position='absolute'
-        el.style.top = '90'
-        el.style.left = '22'
-        el.style.width = '32'
-        el.style.height = '32'
-        el.style.zIndex = '999'
+        el.style.top = '90px'
+        el.style.left = '22px'
+        el.style.width = '32px'
+        el.style.height = '32px'
+        el.style.zIndex = '9999'
         el.style.backgroundColor='rgba(0,0,0,0.4)'
         el.style.backgroundImage="url('https://kaigani.github.io/avastars-bounty-hunter/kai_drol_32x32.png')"
+        el.style.border = '1px'
+        el.style.borderStyle = 'solid'
+        el.style.borderColor = kai_globals.rarityColors[1]
         //el.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
         el.onclick = this.toggleHidden.bind(this)
         document.body.appendChild(el)
