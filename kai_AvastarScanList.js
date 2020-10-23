@@ -122,6 +122,7 @@ class AvastarScanMatch {
         this.id = `${Date.now()+Math.random()}`
         this.name = name
         this.type = 'Default'
+        this.active = true
     }
 
     serialize(){
@@ -129,16 +130,18 @@ class AvastarScanMatch {
             id: this.id,
             name: this.name,
             type: this.type,
+            active: this.active,
         }
     }
 
     unserialize(o){
         this.id = o.id
         this.name = o.name
+        this.active = o.hasOwnProperty('active') ? o.active : true
     }
 
     pass(avastar){
-        return true
+        return this.active
     }
 }
 /*
@@ -209,7 +212,7 @@ class AvastarScanBasicMatch extends AvastarScanMatch {
     }
 
     pass(avastar){
-        return rarityOrder.indexOf(avastar.overallRarity) <= rarityOrder.indexOf(this.maxOverallRarity) &&
+        return super.pass(avastar) && rarityOrder.indexOf(avastar.overallRarity) <= rarityOrder.indexOf(this.maxOverallRarity) &&
             Object.keys(this.traits).reduce( (prev,curr)=>{
                 let gene = this.traits[curr].gene
                 let rarity = this.traits[curr].rarity
@@ -291,7 +294,7 @@ class AvastarScanScoreMatch extends AvastarScanMatch {
 
     pass(avastar){
         // Check score threshold >= n
-        return avastar.score >= this.n
+        return super.pass(avastar) && avastar.score >= this.n
     }
 }
 
@@ -321,7 +324,7 @@ class AvastarScanRarityCount extends AvastarScanMatch {
 
     pass(avastar){
         // Check rarity count >= n
-        return avastar.rawTraits.list.reduce( (prev,curr)=>curr.rarity === this.rarity ? prev+1:prev, 0) >= this.n
+        return super.pass(avastar) && avastar.rawTraits.list.reduce( (prev,curr)=>curr.rarity === this.rarity ? prev+1:prev, 0) >= this.n
     }
 }
 
@@ -349,7 +352,7 @@ class AvastarScanCyborgMatch extends AvastarScanMatch {
 
     pass(avastar){
         // Check for Cyborg set 
-        return avastar.rawTraits.list.reduce( (prev,curr)=>curr.name === 'Cyborg' ? prev+1:prev, 0) >= this.n
+        return super.pass(avastar) && avastar.rawTraits.list.reduce( (prev,curr)=>curr.name === 'Cyborg' ? prev+1:prev, 0) >= this.n
     }
 }
 

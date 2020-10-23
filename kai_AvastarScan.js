@@ -747,6 +747,8 @@ return class AvastarScan {
 
     loadLog(){
         this.logData = JSON.parse(localStorage.getItem('kai_logData')) || { count: 0 }
+        // in case we need to create it
+        localStorage.setItem('kai_logData', JSON.stringify(this.logData))
     }
 
     saveLog(){
