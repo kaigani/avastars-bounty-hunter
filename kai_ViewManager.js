@@ -18,8 +18,12 @@ class kai_ViewManager {
                 el : null,
                 // inner html template
                 template : `
-                <div id="kai_myDiv"><b>Avastar Bounty Hunter v.0.3</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank">Show your support</a></div>
-                <div><button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'open'} }))">Open</button></div>
+                <div id="kai_myDiv"><b>Avastar Bounty Hunter v0.3.3 BETA</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank">Show your support</a></div>
+                <div><span id="kai_logCount">0</span> Avastars scanned</div>
+                <div>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_edit'} }))">Edit Bounties</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_list'} }))">View results</button>
+                </div>
                 `,
                 // data for this view
                 data : {},
@@ -32,12 +36,18 @@ class kai_ViewManager {
                     console.log('Start: Update')
                 },
                 // render function to refresh this view with data
-                render : ()=>{ console.log('Start: It renders.') }
+                render : ()=>{ 
+                    // update count
+                    let el = document.getElementById('kai_logCount')
+                    el.innerText = Number(JSON.parse(localStorage.getItem('kai_logData')).count).toLocaleString('en')
+                    console.log('Start: It renders.') 
+                }
             },
             menu : {
                 el : null,
                 template : `
-                <div>This is the menu of filters</div>
+                <div><a href="#" onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_home'} }))">Home</a> » My Bounties</div>
+                <h4>Edit Bounties</h4>
                 <div>
                     <select id='kai_filter_select'>
                     </select>
@@ -100,6 +110,13 @@ class kai_ViewManager {
                 <div>This is the edit_basic filter panel</div>
 
                 <input id="kai_edit_basic_name" type="text" value="" removed_onblur="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_basic_name', data:this.id} }))"></input>
+                Find up to: <select id="kai_edit_basic_maxOverallRarity">
+                    <option value='Legendary'>Legendary</option>
+                    <option value='Epic'>Epic</option>
+                    <option value='Rare'>Rare</option>
+                    <option value='Uncommon'>Uncommon</option>
+                    <option value='Common'>Common</option>
+                </select>
                 <div>
                     <div id='kai_edit_basic_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Gender</label><br/><span>Any</span></div>
                     <div id='kai_edit_basic_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Series</label><br/><span>Any</span></div>
@@ -144,6 +161,7 @@ class kai_ViewManager {
                             record.traits[trait].rarity = rarity
                         }
                     })
+
                     console.log('Edit Basic: Init')
                 },
                 update : ()=>{
@@ -151,12 +169,21 @@ class kai_ViewManager {
                     let elName = document.getElementById('kai_edit_basic_name') 
                     if(this.views.edit_basic.data.record.hasOwnProperty('name')){ this.views.edit_basic.data.record.name = elName.value }
                     console.log('Edit Basic: Update')
+
+                    // set maxOverallRarityData from select
+                    let elSelect = document.getElementById('kai_edit_basic_maxOverallRarity')
+                    if(this.views.edit_basic.data.record.hasOwnProperty('maxOverallRarity')){ this.views.edit_basic.data.record.maxOverallRarity = elSelect.value }
                 },
                 render : ()=>{
                     let record = this.views.edit_basic.data.record
+
+                    // set name field in the UI
                     let el = document.getElementById('kai_edit_basic_name')
-                
                     el.value = record.name // make sure to keep this in sync via .update()
+
+                    // set correct select item
+                    el = document.getElementById('kai_edit_basic_maxOverallRarity')
+                    el.value = record.maxOverallRarity
 
                     // UPDATE BOXES TO REFLECT data
                     // GENDER
@@ -306,9 +333,10 @@ class kai_ViewManager {
             alert : {
                 el : null,
                 template : `
+                <div><a href="#" onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_home'} }))">Home</a> » My Results</div>
                 <h4>Found matching Avastars</h4>
                 <div id='kai_alertbox'></div>
-                <div onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'close'} }))"><button>Close</button></div>
+                <div onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_edit'} }))"><button>Edit Bounties</button></div>
                 `,
                 data : {},
                 init : ()=>{
@@ -332,10 +360,10 @@ class kai_ViewManager {
 
         // bind actions
         document.addEventListener('kai_action', e=>{ this.action(e.detail) }, false)
-        //document.addEventListener('kai_viewData', e=>{ this.setViewData(e.detail) }, false)
+        ////document.addEventListener('kai_viewData', e=>{ this.setViewData(e.detail) }, false)
         //document.addEventListener('kai_hideView', e=>{ this.hide() }, false)
         //document.addEventListener('kai_showView', e=>{ this.show() }, false)
-        //document.addEventListener('kai_scanResults', e=>{ this.alert(e.detail) }, false)
+        document.addEventListener('kai_scanResults', e=>{ this.alert(e.detail) }, false)
     }
 
 // BUSINESS LOGIC & ROUTING
@@ -428,7 +456,7 @@ class kai_ViewManager {
         this.views[this.currentView].update()
 
         switch(o.action){
-            case 'open':
+            case 'nav_edit':
                 this.currentView = 'menu'
                 this.views[this.currentView].init()
                 //this.views.menu.data.selected = this.dataManager.getKeys()[0].id
@@ -436,6 +464,10 @@ class kai_ViewManager {
                 //this.views.menu.render() // TODO **** can we render all views by default?
                 break
 
+            case 'nav_list':
+                this.currentView = 'alert'
+                this.views[this.currentView].init()
+                break
 
             case 'menu_new_basic':
                 
@@ -522,6 +554,7 @@ class kai_ViewManager {
                 this.currentView = 'menu'
                 break
             
+            case 'nav_home':
             case 'close':
                 this.currentView = 'start'
                 break
