@@ -18,7 +18,8 @@ class kai_ViewManager {
                 el : null,
                 // inner html template
                 template : `
-                <div id="kai_myDiv"><b>Avastar Bounty Hunter v0.3.3 BETA</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank">Show your support</a></div>
+                <h4 id="kai_start_header">Welcome S-Rank Hunter</h4>
+                <div><b>Avastar Bounty Hunter v0.3.3 BETA</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank"><span id="kai_support_message">Show your support</span></a></div>
                 <div><span id="kai_logCount">0</span> Avastars scanned</div>
                 <div>
                     <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_edit'} }))">Edit Bounties</button>
@@ -26,19 +27,40 @@ class kai_ViewManager {
                 </div>
                 `,
                 // data for this view
-                data : {},
+                data : {
+                    srank: false // check for s-rank
+                },
                 init : ()=>{
-                    // to do 
+
+                     // Check for S-Rank & define listener
+                     if(window.hasOwnProperty('ethereum')){
+                        this.views.menu.data.srank = this.views.menu.data.srank || ( kai_srank(ethereum.selectedAddress.toLowerCase()) )
+                        ethereum.on('accountsChanged', ()=>{
+                            this.views.start.init()
+                            this.views.start.render()
+                        })
+                     }
+                     
+
                     console.log('Start: Init')
                 },
                 update : ()=>{
-                    // to do 
+                    
+                    // do nothing
                     console.log('Start: Update')
                 },
                 // render function to refresh this view with data
                 render : ()=>{ 
-                    // update count
-                    let el = document.getElementById('kai_logCount')
+
+                    // Update welcome message
+                    let el = document.getElementById('kai_start_header')
+                    el.innerText = this.views.menu.data.srank ? 'Welcome S-Rank Hunter' : 'Unregistered Novice Hunter: D-Rank'
+
+                    el = document.getElementById('kai_support_message')
+                    el.innerText = this.views.menu.data.srank ? 'Thank you!' : 'Show your support'
+
+                    // update count of scanned avastars
+                    el = document.getElementById('kai_logCount')
                     el.innerText = Number(JSON.parse(localStorage.getItem('kai_logData')).count).toLocaleString('en')
                     console.log('Start: It renders.') 
                 }
@@ -48,17 +70,19 @@ class kai_ViewManager {
                 template : `
                 <div><a href="#" onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_home'} }))">Home</a> » My Bounties</div>
                 <h4>Edit Bounties</h4>
-                <div>
-                    <select id='kai_filter_select'>
-                    </select>
+                <div style="float:left;margin-right:32px;height:120px">
+                    <div>
+                        <select id='kai_filter_select'>
+                        </select>
+                    </div>
+                    <div>
+                        <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_edit'} }))">Edit</button>
+                        <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_delete'} }))">Delete</button>
+                    </div>
                 </div>
                 <div>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_edit'} }))">Edit</button>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_delete'} }))">Delete</button>
-                </div>
-                <div>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_basic'} }))">New By Traits</button>
-                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_score'} }))">New By High Score</button>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_basic'} }))">New By Traits</button><br/>
+                    <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_score'} }))">New By High Score</button><br/>
                     <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'menu_new_rarity'} }))">New By Rarity Count</button>
                 </div>
                 `,
@@ -96,12 +120,15 @@ class kai_ViewManager {
                 update : ()=>{
                     let elSelect = document.getElementById('kai_filter_select') // needs to be rendered after init
                     this.views.menu.data.selected = elSelect.value
+
                 },
                 // refresh any UI elements
                 render : ()=>{
                     let elSelect = document.getElementById('kai_filter_select')
                     elSelect.innerHTML = `${this.views.menu.data.list.map(o=>'<option value='+o.id+'>'+o.name+'</option>').join('')}`
                     console.log('Menu: It renders.')
+
+                    
                 }
             },
             edit_basic : {
@@ -117,6 +144,7 @@ class kai_ViewManager {
                     <option value='Uncommon'>Uncommon</option>
                     <option value='Common'>Common</option>
                 </select>
+                <input id="kai_edit_basic_isActive" type='checkbox' /> active
                 <div>
                     <div id='kai_edit_basic_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Gender</label><br/><span>Any</span></div>
                     <div id='kai_edit_basic_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Series</label><br/><span>Any</span></div>
@@ -173,6 +201,11 @@ class kai_ViewManager {
                     // set maxOverallRarityData from select
                     let elSelect = document.getElementById('kai_edit_basic_maxOverallRarity')
                     if(this.views.edit_basic.data.record.hasOwnProperty('maxOverallRarity')){ this.views.edit_basic.data.record.maxOverallRarity = elSelect.value }
+                
+                    // set active from checkbox
+                    let elActive = document.getElementById('kai_edit_basic_isActive')
+                    if(this.views.edit_basic.data.record.hasOwnProperty('active')){ this.views.edit_basic.data.record.active = elActive.checked }
+                
                 },
                 render : ()=>{
                     let record = this.views.edit_basic.data.record
@@ -184,6 +217,10 @@ class kai_ViewManager {
                     // set correct select item
                     el = document.getElementById('kai_edit_basic_maxOverallRarity')
                     el.value = record.maxOverallRarity
+
+                    // active status on/off
+                    el = document.getElementById('kai_edit_basic_isActive')
+                    el.checked = record.active
 
                     // UPDATE BOXES TO REFLECT data
                     // GENDER
@@ -212,8 +249,8 @@ class kai_ViewManager {
                 <div><b>Edit High Score Filter</b></div>
 
                 <div>
-                    NAME <input id="kai_edit_score_name" type="text" value=""></input><br/>
-                    SCORE MAX <input id="kai_edit_score_max" type="number" value=""></input><br/>
+                    <input id="kai_edit_score_name" type="hidden" value=""></input>
+                    Find Scores <input id="kai_edit_score_max" type="number" value=""></input> & above<br/>
                 </div>
                 
                 <div>
@@ -237,16 +274,23 @@ class kai_ViewManager {
                 update : ()=>{
                     // set NAME data from the input field
                     let elName = document.getElementById('kai_edit_score_name') 
-                    if(this.views.edit_score.data.record.hasOwnProperty('name')){ this.views.edit_score.data.record.name = elName.value }
+                    // auto generate name - below
+                    //if(this.views.edit_score.data.record.hasOwnProperty('name')){ this.views.edit_score.data.record.name = elName.value }
+                    
                     // set MAX (n) data from the input field
                     let elMax = document.getElementById('kai_edit_score_max') 
                     if(this.views.edit_score.data.record.hasOwnProperty('n')){ this.views.edit_score.data.record.n = elMax.value }
+
+                    // Automatic name
+                    this.views.edit_score.data.record.name = `High Score: ${elMax.value}`
+
                     console.log('Edit Score: Update')
                 },
                 // render function to refresh this view with data
                 render : ()=>{ 
                     let record = this.views.edit_score.data.record
 
+                    // NAME will be hidden
                     let el = document.getElementById('kai_edit_score_name')
                     el.value = record.name // make sure to keep this in sync via .update()
 
@@ -266,15 +310,22 @@ class kai_ViewManager {
                 <div><b>Edit Rarity Count</b></div>
 
                 <div>
-                    NAME <input id="kai_edit_rarity_name" type="text" value=""></input><br/>
-                    RARITY COUNT (AT LEAST) <input id="kai_edit_rarity_min" type="number" value=""></input>x 
+                    <input id="kai_edit_rarity_name" type="hidden" value=""></input>
+                    <input id="kai_edit_rarity_min" type="number" value=""></input>x 
                     <select id="kai_edit_rarity_select">
                         <option>Common</option>
                         <option>Uncommon</option>
                         <option>Rare</option>
                         <option>Epic</option>
                         <option>Legendary</option>
-                    </select><br/>
+                    </select>
+                    Find up to: <select id="kai_edit_rarity_maxOverallRarity">
+                        <option value='Legendary'>Legendary</option>
+                        <option value='Epic'>Epic</option>
+                        <option value='Rare'>Rare</option>
+                        <option value='Uncommon'>Uncommon</option>
+                        <option value='Common'>Common</option>
+                    </select>
                 </div>
                 
                 <div>
@@ -298,8 +349,8 @@ class kai_ViewManager {
                 update : ()=>{
 
                     // set NAME data from the input field
-                    let elName = document.getElementById('kai_edit_rarity_name') 
-                    if(this.views.edit_rarity.data.record.hasOwnProperty('name')){ this.views.edit_rarity.data.record.name = elName.value }
+                    //let elName = document.getElementById('kai_edit_rarity_name') 
+                    //if(this.views.edit_rarity.data.record.hasOwnProperty('name')){ this.views.edit_rarity.data.record.name = elName.value }
 
                     // set MIN rarity count (n) data from the input field
                     let elMin = document.getElementById('kai_edit_rarity_min') 
@@ -309,6 +360,14 @@ class kai_ViewManager {
                     let elSelect = document.getElementById('kai_edit_rarity_select') 
                     if(this.views.edit_rarity.data.record.hasOwnProperty('rarity')){ this.views.edit_rarity.data.record.rarity = elSelect.value }
 
+                    // automatic NAME setting
+                    this.views.edit_rarity.data.record.name = `${elMin.value}x ${elSelect.value}`
+
+                    // set maxOverallRarityData from select
+                    elSelect = document.getElementById('kai_edit_rarity_maxOverallRarity')
+                    if(this.views.edit_rarity.data.record.hasOwnProperty('maxOverallRarity')){ this.views.edit_rarity.data.record.maxOverallRarity = elSelect.value }
+                
+                    
                     console.log('Edit Rarity Count: Update')
                 },
                 // render function to refresh this view with data
@@ -318,14 +377,18 @@ class kai_ViewManager {
                     // UPDATE fields TO REFLECT data
                     let el = document.getElementById('kai_edit_rarity_name')
                     el.value = record.name // make sure to keep this in sync via .update()
-
-                    // MIN
+                    
+                    // COUNT
                     el = document.getElementById('kai_edit_rarity_min')
-                    el.value = record.n // make sure to keep this in sync via .update()
+                    el.value = record.n 
 
                     // RARITY
                     el = document.getElementById('kai_edit_rarity_select')
-                    el.value = record.rarity // make sure to keep this in sync via .update()
+                    el.value = record.rarity 
+
+                    // MAX OVERALL RARITY
+                    el = document.getElementById('kai_edit_rarity_maxOverallRarity')
+                    el.value = record.maxOverallRarity 
 
                     console.log('Edit Rarity Count: It renders.') 
                 }
@@ -380,7 +443,7 @@ class kai_ViewManager {
         el.style.top = '0'
         el.style.left = '0'
         el.style.width = '100%'
-        el.style.maxHeight = '540px'
+        //el.style.maxHeight = '540px'
         el.style.zIndex = '99'
         el.style.padding = '96px 12px 22px 12px' // allow for global nav bar above.
         el.style.backgroundColor='white'
@@ -388,11 +451,11 @@ class kai_ViewManager {
         el.appendChild(this.container)
         document.body.appendChild(el) 
 
-        // Toggle button
+        // View/hide toggle button
         el = document.createElement('div')
         el.style.position='absolute'
-        el.style.top = '90px'
-        el.style.left = '22px'
+        el.style.top = '96px'
+        el.style.left = '16px'
         el.style.width = '32px'
         el.style.height = '32px'
         el.style.zIndex = '9999'
@@ -538,6 +601,7 @@ class kai_ViewManager {
                 this.dataManager.save()
 
                 this.currentView = 'start'
+                this.views[this.currentView].init()
                 break
             
             case 'edit_save':
@@ -552,11 +616,13 @@ class kai_ViewManager {
 
             case 'edit_cancel':
                 this.currentView = 'menu'
+                //this.views[this.currentView].init()
                 break
             
             case 'nav_home':
             case 'close':
                 this.currentView = 'start'
+                this.views[this.currentView].init()
                 break
 
             case 'toggleBox':

@@ -47,6 +47,7 @@
         // kai_globals
         loadScript(`${URL_PREFIX}/kai_globals.min.js`), 
         loadScript(`${URL_PREFIX}/kai_xDC.min.js`), 
+        loadScript(`${URL_PREFIX}/kai_srank.js`), 
 
         // avastarTraits - data
         loadScript(`${URL_PREFIX}/avastar-traits.min.js`), 
@@ -55,11 +56,11 @@
         loadScript(`${URL_PREFIX}/kai_utils.min.js`),
         
         // kai_ViewManager
-        loadScript(`${URL_PREFIX}@dafff9a2e3a69dda1ea25e99b20f3e2a4e88edcf/kai_ViewManager.min.js`),
+        loadScript(`${URL_PREFIX}@6f4dd75d794cf9882cc5c61b7068751a440acdbc/kai_ViewManager.min.js`),
 
         // AvastarScan - core app
         loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
-        loadScript(`${URL_PREFIX}@0bef743a30aa062fb766b85ab9f4515b6b2f5bf7/kai_AvastarScan.min.js`)
+        loadScript(`${URL_PREFIX}@6f4dd75d794cf9882cc5c61b7068751a440acdbc/kai_AvastarScan.min.js`)
 
     ]).then(initApp)
 

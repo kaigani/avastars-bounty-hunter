@@ -302,17 +302,19 @@ class AvastarScanScoreMatch extends AvastarScanMatch {
 // RARITY COUNT - find >= n of rarity (e.g. 'Legendary')
 //
 class AvastarScanRarityCount extends AvastarScanMatch {
-    constructor(name, rarity='Common', n=12){
+    constructor(name, rarity='Common', n=12, maxOverallRarity='Legendary'){
         super(name)
         this.type = 'RarityCount'
         this.rarity = rarity
         this.n = n
+        this.maxOverallRarity = maxOverallRarity
     }
 
     serialize(){
         let o = super.serialize()
         o.rarity = this.rarity
         o.n = this.n
+        o.maxOverallRarity = this.maxOverallRarity
         return o
     }
 
@@ -320,11 +322,14 @@ class AvastarScanRarityCount extends AvastarScanMatch {
         super.unserialize(o)
         this.rarity = o.rarity
         this.n = o.n
+        this.maxOverallRarity = o.hasOwnProperty('maxOverallRarity') ? o.maxOverallRarity : 'Legendary'
     }
 
     pass(avastar){
         // Check rarity count >= n
-        return super.pass(avastar) && avastar.rawTraits.list.reduce( (prev,curr)=>curr.rarity === this.rarity ? prev+1:prev, 0) >= this.n
+        return super.pass(avastar) && 
+                rarityOrder.indexOf(avastar.overallRarity) <= rarityOrder.indexOf(this.maxOverallRarity) &&
+                avastar.rawTraits.list.reduce( (prev,curr)=>curr.rarity === this.rarity ? prev+1:prev, 0) >= this.n
     }
 }
 
