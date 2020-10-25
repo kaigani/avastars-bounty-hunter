@@ -34,7 +34,7 @@ class kai_ViewManager {
 
                      // Check for S-Rank & define listener
                      if(window.hasOwnProperty('ethereum')){
-                        this.views.menu.data.srank = this.views.menu.data.srank || ( kai_srank(ethereum.selectedAddress.toLowerCase()) )
+                        this.views.menu.data.srank = this.views.menu.data.srank || ( kai_srank(String(ethereum.selectedAddress).toLowerCase()) )
                         ethereum.on('accountsChanged', ()=>{
                             this.views.start.init()
                             this.views.start.render()
