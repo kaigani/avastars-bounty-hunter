@@ -3,6 +3,7 @@
 
     //const URL_PREFIX = "http://localhost:3030" 
     const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter"
+    const VERSION = "6f4dd75d794cf9882cc5c61b7068751a440acdbc"
 
     function loadScript(url) {
         return new Promise(function (resolve, reject) {
@@ -42,25 +43,25 @@
     Promise.all([
 
         // CSS
-        loadStyles(`${URL_PREFIX}/kai_styles.min.css`),
+        loadStyles(`${URL_PREFIX}@${VERSION}/kai_styles.min.css`),
 
         // kai_globals
-        loadScript(`${URL_PREFIX}/kai_globals.min.js`), 
-        loadScript(`${URL_PREFIX}/kai_xDC.min.js`), 
-        loadScript(`${URL_PREFIX}/kai_srank.js`), 
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_globals.min.js`), 
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_xDC.min.js`), 
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_srank.js`), 
 
         // avastarTraits - data
-        loadScript(`${URL_PREFIX}/avastar-traits.min.js`), 
+        loadScript(`${URL_PREFIX}@${VERSION}/avastar-traits.min.js`), 
 
         // kai_utils - utility functions
-        loadScript(`${URL_PREFIX}/kai_utils.min.js`),
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_utils.min.js`),
         
         // kai_ViewManager
-        loadScript(`${URL_PREFIX}@6f4dd75d794cf9882cc5c61b7068751a440acdbc/kai_ViewManager.min.js`),
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_ViewManager.min.js`),
 
         // AvastarScan - core app
-        loadScript(`${URL_PREFIX}/kai_AvastarScanList.min.js`),
-        loadScript(`${URL_PREFIX}@6f4dd75d794cf9882cc5c61b7068751a440acdbc/kai_AvastarScan.min.js`)
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScanList.min.js`),
+        loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScan.min.js`)
 
     ]).then(initApp)
 
