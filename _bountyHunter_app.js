@@ -39,38 +39,47 @@
         })
       }
 
-    // LOAD CLASSES
-    Promise.all([
+      if(!window.bountyHunterHasLoaded){
+        // LOAD CLASSES
+        Promise.all([
 
-        // CSS
-        loadStyles(`${URL_PREFIX}@${VERSION}/kai_styles.min.css`),
+            // CSS
+            loadStyles(`${URL_PREFIX}@${VERSION}/kai_styles.min.css`),
 
-        // kai_globals
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_globals.min.js`), 
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_xDC.min.js`), 
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_srank.js`), 
+            // kai_globals
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_globals.min.js`), 
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_xDC.min.js`), 
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_srank.js`), 
 
-        // avastarTraits - data
-        loadScript(`${URL_PREFIX}@${VERSION}/avastar-traits.min.js`), 
+            // avastarTraits - data
+            loadScript(`${URL_PREFIX}@${VERSION}/avastar-traits.min.js`), 
 
-        // kai_utils - utility functions
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_utils.min.js`),
-        
-        // kai_ViewManager
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_ViewManager.min.js`),
+            // kai_utils - utility functions
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_utils.min.js`),
+            
+            // kai_ViewManager
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_ViewManager.min.js`),
 
-        // AvastarScan - core app
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScanList.min.js`),
-        loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScan.min.js`)
+            // AvastarScan - core app
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScanList.min.js`),
+            loadScript(`${URL_PREFIX}@${VERSION}/kai_AvastarScan.min.js`)
 
-    ]).then(initApp)
+        ]).then(initApp)
+
+      window.bountyHunterHasLoaded = true
+    }
 
     function initApp(){
 
         //kai_utils.enableConsole()
 
-        let app = new kai_AvastarScan(document)
-        let vm = new kai_ViewManager(app.avastarScanList) // avastarScanList as data manager
+        // WAIT UNTIL NAV LOADED
+        if(document.getElementsByClassName('nav')[0]){
+          let app = new kai_AvastarScan(document)
+          let vm = new kai_ViewManager(app.avastarScanList) // avastarScanList as data manager
+        }else{
+          setTimeout(initApp, 1000)
+        }
     }
 
 })(window)
