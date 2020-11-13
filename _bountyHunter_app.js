@@ -1,9 +1,9 @@
-// v0.3.4
+// v0.1x 
 ((window)=>{
 
     //const URL_PREFIX = "http://localhost:3030" 
     const URL_PREFIX = "https://cdn.jsdelivr.net/gh/kaigani/avastars-bounty-hunter"
-    const VERSION = "87dd089d11e407ce0eec547e87eecd3bfd7bf60d"
+    const VERSION = "9fe6e535e84c4920c18a2e08ea512887298811c7"
 
     function loadScript(url) {
         return new Promise(function (resolve, reject) {
