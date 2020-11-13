@@ -18,8 +18,8 @@ class kai_ViewManager {
                 el : null,
                 // inner html template
                 template : `
-                <h4 id="kai_start_header">Welcome S-Rank Hunter</h4>
-                <div><b>Avastar Bounty Hunter v0.3.3 BETA</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank"><span id="kai_support_message">Show your support</span></a></div>
+                <h4 id="kai_start_header">Welcome ...</h4>
+                <div><b>Avastar Bounty Hunter v0.3.4</b> - <a href="https://opensea.io/collection/s-rank-bounty-hunter-badges" target="_blank"><span id="kai_support_message">Show your support</span></a></div>
                 <div><span id="kai_logCount">0</span> Avastars scanned</div>
                 <div>
                     <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'nav_edit'} }))">Edit Bounties</button>
@@ -33,7 +33,7 @@ class kai_ViewManager {
                 init : ()=>{
 
                      // Check for S-Rank & define listener
-                     if(window.hasOwnProperty('ethereum')){
+                     if(window.hasOwnProperty('ethereum') && ethereum !== undefined){
                         this.views.menu.data.srank = this.views.menu.data.srank || ( kai_srank(String(ethereum.selectedAddress).toLowerCase()) )
                         ethereum.on('accountsChanged', ()=>{
                             this.views.start.init()
