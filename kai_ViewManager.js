@@ -146,20 +146,20 @@ class kai_ViewManager {
                 </select>
                 <input id="kai_edit_basic_isActive" type='checkbox' /> active
                 <div>
-                    <div id='kai_edit_basic_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Gender</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Series</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_skinTone' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Skin Tone</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_hairColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_eyeColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eye Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_backgroundColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Background Color</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_backdrop' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Backdrop</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_ears' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Ears</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_face' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Face</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_nose' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Nose</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_mouth' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Mouth</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_facialFeature' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Facial Feature</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_eyes' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Eyes</label><br/><span>Any</span></div>
-                    <div id='kai_edit_basic_hairStyle' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'toggleBox', data:this.id} }))"><label>Hair Style</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_gender' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Gender</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_series' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Series</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_skinTone' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Skin Tone</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_hairColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Hair Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_eyeColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Eye Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_backgroundColor' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Background Color</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_backdrop' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Backdrop</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_ears' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Ears</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_face' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Face</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_nose' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Nose</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_mouth' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Mouth</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_facialFeature' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Facial Feature</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_eyes' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Eyes</label><br/><span>Any</span></div>
+                    <div id='kai_edit_basic_hairStyle' class='box' onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'advanceBox', data:this.id} }))" oncontextmenu="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'retreatBox', data:this.id} })); return false;"><label>Hair Style</label><br/><span>Any</span></div>
                 </div>
                 <div>
                     <button onclick="document.dispatchEvent(new CustomEvent('kai_action', { detail: {action:'edit_save'} }))">Save</button>
@@ -618,15 +618,19 @@ class kai_ViewManager {
                 this.currentView = 'menu'
                 //this.views[this.currentView].init()
                 break
-            
+
             case 'nav_home':
             case 'close':
                 this.currentView = 'start'
                 this.views[this.currentView].init()
                 break
 
-            case 'toggleBox':
-                this.toggleBox(o.data)
+            case 'advanceBox':
+                this.advanceBox(o.data)
+                break
+
+            case 'retreatBox':
+                this.retreatBox(o.data)
                 break
         }
         this.refresh()
@@ -680,11 +684,65 @@ class kai_ViewManager {
         })
     }
 
-    toggleBox(id){
+    retreatBox(id){
         let key = id.match(/^.+_(.+)$/) ? id.match(/^.+_(.+)$/)[1] : 'ERROR'
         let record = this.views[this.currentView].data.record
         let genderList = ['Any','Female','Male']
-        if(key === 'ERROR') throw('ERROR at toggleBox')
+        if(key === 'ERROR') throw('ERROR at retreatBox')
+
+        switch(key){
+
+            case 'gender':
+                let i = genderList.indexOf(record.gender)-1
+                i = i < 0 ? genderList.length-1 : i
+                record.gender = genderList[i]
+                break
+
+            case 'series':
+                record.series = record.series === 'Any' ? 0 : record.series
+                record.series = record.series > 0 ? record.series-1 : 5
+                record.series = record.series === 0 ? 'Any' : record.series
+                break
+
+            default:
+                let trait = record.traits[key]
+
+                // RETREAT to the last one, or wrap around to any/any
+                if(trait.rarity === 'Any'){
+                    // Go back to the last rarity level (not perfect, but good enough)
+                    trait.rarity = 'Legendary'
+                }else{
+                    // Retreat to the last gene within this rarity level, filtered by gender (any?) and series
+                    let traitList = kai_utils.findMatching(key,{gender:record.gender,rarity:trait.rarity,series:record.series})
+                    let index = traitList.reduce( (prev,curr,i)=>{
+                        return trait.gene === curr.name ? i : prev
+                    },-1)
+                    if(index === -1){
+                        // Just go fully back to the previous section for now
+                        trait.gene = 'Any'
+
+                        let rarityIndex = kai_globals.rarityLevels.indexOf(trait.rarity)-1
+                        rarityIndex = rarityIndex < 0 ? kai_globals.rarityLevels.length-1 : rarityIndex
+                        let previousRarity = kai_globals.rarityLevels[rarityIndex]
+                        trait.rarity = previousRarity
+                    }else{
+                        // Advance to the next rarity level, or back to start, Any Gene + Next Rarity
+                        index--
+                        trait.gene = index < 0 ? 'Any' : traitList[index].name
+                        // let rarityIndex = kai_globals.rarityLevels.indexOf(trait.rarity)-1
+                        // rarityIndex = rarityIndex < 0 ? kai_globals.rarityLevels.length : rarityIndex
+                        // let previousRarity = kai_globals.rarityLevels[rarityIndex]
+                        // trait.rarity = index < traitList.length ? trait.rarity : nextRarity
+                    }
+                }
+        }
+    }
+
+    advanceBox(id){
+        let key = id.match(/^.+_(.+)$/) ? id.match(/^.+_(.+)$/)[1] : 'ERROR'
+        let record = this.views[this.currentView].data.record
+        let genderList = ['Any','Female','Male']
+        if(key === 'ERROR') throw('ERROR at advanceBox')
 
         switch(key){
 
