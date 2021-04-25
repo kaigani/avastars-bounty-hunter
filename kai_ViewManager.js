@@ -708,31 +708,32 @@ class kai_ViewManager {
                 let trait = record.traits[key]
 
                 // RETREAT to the last one, or wrap around to any/any
-                if(trait.rarity === 'Any'){
-                    // Go back to the last rarity level (not perfect, but good enough)
-                    trait.rarity = 'Legendary'
-                }else{
+                if (trait.rarity === 'Any') {
+                    // Go back to the last trait of the last rarity level
+                    let previousRarity = kai_globals.rarityLevels[kai_globals.rarityLevels.length-1]
+                    trait.rarity = previousRarity
+                    let previousTraitList = kai_utils.findMatching(key,{gender:record.gender,rarity:trait.rarity,series:record.series})
+                    trait.gene = previousTraitList[previousTraitList.length-1].name
+                } else {
                     // Retreat to the last gene within this rarity level, filtered by gender (any?) and series
                     let traitList = kai_utils.findMatching(key,{gender:record.gender,rarity:trait.rarity,series:record.series})
                     let index = traitList.reduce( (prev,curr,i)=>{
                         return trait.gene === curr.name ? i : prev
-                    },-1)
-                    if(index === -1){
-                        // Just go fully back to the previous section for now
-                        trait.gene = 'Any'
-
-                        let rarityIndex = kai_globals.rarityLevels.indexOf(trait.rarity)-1
-                        rarityIndex = rarityIndex < 0 ? kai_globals.rarityLevels.length-1 : rarityIndex
-                        let previousRarity = kai_globals.rarityLevels[rarityIndex]
+                    }, -1)
+                    if (index === -1) {
+                        // Retreat to previous rarity level
+                        let previousRarity = kai_globals.rarityLevels[kai_globals.rarityLevels.indexOf(trait.rarity)-1]
                         trait.rarity = previousRarity
-                    }else{
-                        // Advance to the next rarity level, or back to start, Any Gene + Next Rarity
+                        if (previousRarity === 'Any') {
+                          trait.gene = 'Any'
+                        } else {
+                          let previousTraitList = kai_utils.findMatching(key,{gender:record.gender,rarity:trait.rarity,series:record.series})
+                          trait.gene = previousTraitList[previousTraitList.length-1].name
+                        }
+                    } else {
+                        // Retreat to the previous trait
                         index--
                         trait.gene = index < 0 ? 'Any' : traitList[index].name
-                        // let rarityIndex = kai_globals.rarityLevels.indexOf(trait.rarity)-1
-                        // rarityIndex = rarityIndex < 0 ? kai_globals.rarityLevels.length : rarityIndex
-                        // let previousRarity = kai_globals.rarityLevels[rarityIndex]
-                        // trait.rarity = index < traitList.length ? trait.rarity : nextRarity
                     }
                 }
         }
